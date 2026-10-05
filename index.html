@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f766e" />
+  <title>Milton BPSC Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">M</span><div><h1>Milton BPSC Tracker</h1><p>Study smarter. Revise consistently. Test yourself.</p></div></div>
+      <div class="top-actions"><button class="ghost" id="exportBtn">Export backup</button><label class="ghost file-label">Import backup<input type="file" id="importInput" accept="application/json" /></label><button class="primary" id="adminBtn">Admin portal</button></div>
+    </header>
+
+    <main>
+      <section class="hero"><div><span class="eyebrow">BPSC preparation cockpit</span><h2>Your progress, at a glance.</h2><p>Track coverage, notes, revision cycles, test marks, and revision dates across your chosen syllabus.</p></div><div class="hero-ring"><span id="overallPercent">0%</span><small>overall</small></div></section>
+
+      <section class="stats-grid">
+        <article class="stat-card"><span class="stat-icon teal">◒</span><div><small>Total topics</small><strong id="totalCount">0</strong></div></article>
+        <article class="stat-card"><span class="stat-icon green">✓</span><div><small>Covered / revised</small><strong id="coveredCount">0</strong></div></article>
+        <article class="stat-card"><span class="stat-icon red">!</span><div><small>Not covered</small><strong id="leftCount">0</strong></div></article>
+        <article class="stat-card"><span class="stat-icon blue">↻</span><div><small>Tests completed</small><strong id="testCount">0</strong></div></article>
+        <article class="stat-card"><span class="stat-icon yellow">★</span><div><small>Average test mark</small><strong id="averageMarks">—</strong></div></article>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="panel chart-panel"><div class="panel-heading"><div><span class="eyebrow">Snapshot</span><h3>Coverage overview</h3></div><span class="muted" id="lastSaved">Ready</span></div><div class="donut-wrap"><div class="donut" id="donut"><div><strong id="donutPercent">0%</strong><small>covered</small></div></div><div class="legend"><span><i class="dot green-dot"></i> Revised / tested <b id="legendGreen">0</b></span><span><i class="dot yellow-dot"></i> Notes done <b id="legendYellow">0</b></span><span><i class="dot blue-dot"></i> 2–3 revisions <b id="legendBlue">0</b></span><span><i class="dot red-dot"></i> Not covered <b id="legendRed">0</b></span></div></div></article>
+        <article class="panel chart-panel"><div class="panel-heading"><div><span class="eyebrow">Subject view</span><h3>Progress by section</h3></div></div><div id="subjectChart" class="bar-chart"></div></article>
+      </section>
+
+      <section class="panel topics-panel"><div class="panel-heading topics-heading"><div><span class="eyebrow">Syllabus workspace</span><h3>Topic tracker</h3></div><div class="filters"><select id="subjectFilter"><option value="all">All subjects</option></select><select id="statusFilter"><option value="all">All statuses</option><option value="not-started">Not covered</option><option value="notes">Notes done</option><option value="revised">Revised / test done</option><option value="revised-2">Revised 2–3 times</option></select><input id="searchInput" type="search" placeholder="Search topics..." /></div></div><div class="status-key"><span><i class="dot red-dot"></i>Not covered</span><span><i class="dot yellow-dot"></i>Notes done</span><span><i class="dot green-dot"></i>Revised / test done</span><span><i class="dot blue-dot"></i>2–3 revisions</span></div><div id="topicsList" class="topics-list"></div></section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="adminModal" hidden><section class="modal"><div class="modal-heading"><div><span class="eyebrow">Local browser storage</span><h2>Admin portal</h2><p>Add, edit, or remove topics. Changes stay in this browser.</p></div><button class="icon-button" id="closeAdmin">×</button></div><form id="topicForm" class="admin-form"><input type="hidden" id="topicId" /><label>Subject<select id="topicSubject" required></select></label><label>Section / source<input id="topicSection" required placeholder="e.g. Paper II - Indian Economy" /></label><label>Topic title<input id="topicTitle" required placeholder="Enter a syllabus topic" /></label><label>Initial status<select id="topicStatus"><option value="not-started">Not covered</option><option value="notes">Notes done</option><option value="revised">Revised / test done</option><option value="revised-2">Revised 2–3 times</option></select></label><div class="form-actions"><button type="button" class="ghost" id="resetForm">Clear</button><button class="primary" type="submit">Save topic</button></div></form><div class="admin-divider"></div><div class="admin-list-heading"><h3>Manage topics</h3><span id="adminTopicCount"></span></div><div id="adminTopicList" class="admin-topic-list"></div></section></div>
+
+  <div class="modal-backdrop" id="updateModal" hidden><section class="modal small-modal"><div class="modal-heading"><div><span class="eyebrow">Topic update</span><h2 id="updateTitle">Update topic</h2></div><button class="icon-button" id="closeUpdate">×</button></div><form id="updateForm" class="admin-form"><input type="hidden" id="updateId" /><label>Status<select id="updateStatus"><option value="not-started">Not covered</option><option value="notes">Notes done</option><option value="revised">Revised / test done</option><option value="revised-2">Revised 2–3 times</option></select></label><label>Revision date<input type="date" id="revisionDate" /></label><label>Revision count<input type="number" id="revisionCount" min="0" max="99" placeholder="0" /></label><label class="check-row"><input type="checkbox" id="testDone" /> Test series completed</label><label>Test marks<input type="number" id="testMarks" min="0" max="100" step="0.5" placeholder="e.g. 72" /></label><div class="form-actions"><button type="button" class="ghost" id="cancelUpdate">Cancel</button><button class="primary" type="submit">Update progress</button></div></form></section></div>
+  <div class="toast" id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
